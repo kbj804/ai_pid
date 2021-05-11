@@ -72,7 +72,7 @@ async def update_train_data(request:Request):
 
 
 @router.get('/getLoadML')
-async def load_ml_model(request: Request):
+async def get_load_ml_md(request: Request):
     """
     no params\n
     :return\n
@@ -102,9 +102,10 @@ async def get_predict_file_id(request: Request, file_id: int):
     hf = hoo.df_to_hf(df)
     hoo.predict(hf)
     
+    result_list = [i+1 for  i, value in enumerate(hoo.preds) if value == 1]
     # model = load_ml_model(USING_MODEL_PATH)
 
-    return hoo.preds
+    return result_list
 
 @router.get('/getPredictPage')
 async def get_predict_train_id(request: Request, train_id: int):

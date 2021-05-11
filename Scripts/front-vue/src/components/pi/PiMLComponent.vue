@@ -75,7 +75,7 @@
       </md-tabs>
 
       <md-dialog-actions>
-        <md-button class="md-primary" @click="predictFile()">PREDICT</md-button>
+        <md-button class="md-primary" @click="predictFile(selected.id)">PREDICT</md-button>
         <md-button class="md-primary" @click="showDialog=false">Close</md-button>
       </md-dialog-actions>
     </md-dialog>
@@ -88,6 +88,14 @@
                 :md-content="error"
                 >
 </md-dialog-alert>
+
+<md-dialog-alert :md-active.sync="predictDialog" v-if="predictValue"
+                md-title="Predict Page Result"
+                :md-content="predictValue.data"
+                >
+</md-dialog-alert>
+
+
 <!-- <div v-if="error" class="error">
       {{ error }}
 </div> -->
@@ -105,17 +113,20 @@ import axios from "axios";``
       return{
         // mdContent: 'md-content',
         boolean:false,
+        // DIALOG
         showDialog: false,
         errorDialog: false,
-        iscontainer: true,
-        isSpinner: false,
-        selected: null,
+        predictDialog: false,
 
+        iscontainer: true,
+        selected: null,
 
         trainData: null,
 
         post: null,
         error:null,
+        predictValue: null,
+
         filename:null,
         
         summary: {
@@ -141,12 +152,10 @@ import axios from "axios";``
 
         this.post = null;
         this.startBgBlur(true);
-        this.isSpinner = true
         const url = "http://192.168.21.38:8001/api/ml/getLoadML";
             axios.get(url,
             ).then(response => {
                       this.iscontainer = false
-                      this.isSpinner = false
                       this.post = response
                       
                       setTimeout(() => {
@@ -157,7 +166,6 @@ import axios from "axios";``
                       console.log(response);
 
                   }).catch((error) => {
-                      this.isSpinner = false
                       this.errorDialog = true
                       this.error = error.toString()
                       console.log(error);
@@ -166,38 +174,11 @@ import axios from "axios";``
 
       },
 
-      submit () {
-          this.isSpinner = true
-          const formData = new FormData();
-          // this.filename = files[0].name
-          formData.append("files", this.file);
-            this.filename = this.file.name
-            const url = "http://192.168.21.38:8001/api/ml/uploadFiles";
-            axios.post(url, 
-                formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    },
-                
-                }).then(response => {
-                    this.iscontainer = false
-                    this.isSpinner = false
-                    this.post = response
-                    console.log("RESPONSE");
-                    console.log(response);
-
-                }).catch((error) => {
-                    this.isSpinner = false
-                    this.error = error.toString()
-                    console.log(error);
-                })
-      },
       onSelect (item) {
             this.selected = item
       },
 
       loadTrain(idValue) {
-            this.isSpinner = true
             const url = "http://192.168.21.38:8001/api/pid/getTrain";
             axios.get(url,
                   {
@@ -206,13 +187,11 @@ import axios from "axios";``
                     }
                   }
                   ).then(response => {
-                      this.isSpinner = false
                       this.trainData = response
                       this.regexSum()
                       console.log("RESPONSE");
                       console.log(response);
                   }).catch((error) => {
-                      this.isSpinner = false
                       this.error = error.toString()
                       console.log(error);
                   })
@@ -234,8 +213,29 @@ import axios from "axios";``
             this.summary.col += this.trainData.data[i].column10
           }
         },
-        predictFile(){
-
+        predictFile(idValue){
+          this.startBgBlur(true);
+          const url = "http://192.168.21.38:8001/api/ml/getPredictFile";
+          axios.get(url,
+                {
+                  params:{
+                    file_id: idValue
+                  }
+                }
+                ).then(response => {
+                    this.predictDialog = true
+                    this.predictValue = response
+                    setTimeout(() => {
+                        this.startBgBlur(false);
+                      }, 1000)
+                    console.log("RESPONSE");
+                    console.log(response);
+                }).catch((error) => {
+                    this.errorDialog = true
+                    this.error = error.toString()
+                    this.startBgBlur(false);
+                    console.log(error);
+                })
         },
 
     }

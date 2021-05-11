@@ -22,3 +22,6 @@ DEFAULT_CSV_PATH = r'D:\\Project\\pid\\Scripts\\fastapp\\'
 H2O_MODEL_PATH = r'D:\\Project\\pid\\Scripts\\fastapp\\data\\results\\ml_model\\'
 
 USING_MODEL_PATH = H2O_MODEL_PATH + 'GBM_1_AutoML_20210423_140912'
+
+
+# URL

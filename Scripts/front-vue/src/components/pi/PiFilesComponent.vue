@@ -22,7 +22,6 @@
 
     <div>
       <md-switch v-model="boolean">is PID files </md-switch>
-
       <md-button class="md-raised md-accent" @click="showFiles">Load File </md-button>
       <md-button class="md-primary md-raised" v-if="selected" @click="showDialog = true, loadTrain(selected.id)">Show Dialog</md-button>
     </div>
