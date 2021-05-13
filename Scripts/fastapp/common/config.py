@@ -20,7 +20,7 @@ class LocalConfig(Config):
     PROJ_RELOAD: bool = True
     # postgresql://federer:grandestslam@localhost:5432/tennis
     # user, password, host, port, db
-    DB_URL: str = "postgresql://iztbj:1234@192.168.21.198:2345/pidb"
+    DB_URL: str = "postgresql://iztbj:1234@192.168.21.204:2345/pidb"
 
     TRUSTED_HOSTS = ["*"]
     ALLOW_SITE = ["*"]

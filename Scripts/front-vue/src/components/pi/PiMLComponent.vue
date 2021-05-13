@@ -1,5 +1,20 @@
 <template>
   <div class="center">
+    
+
+    <md-chip class="md-accent" md-clickable>전화번호</md-chip>
+    <md-chip class="md-accent" md-clickable>휴대폰</md-chip>
+    <md-chip class="md-accent" md-clickable>이메일</md-chip>
+    <md-chip class="md-accent" md-clickable>주민등록번호</md-chip>
+    <md-chip class="md-accent" md-clickable>계좌번호</md-chip>
+    <md-chip class="md-accent" md-clickable>IP주소</md-chip>
+    <md-chip class="md-accent" md-clickable>MAC주소</md-chip>
+    <md-chip class="md-accent" md-clickable>여권번호</md-chip>
+    <md-chip class="md-accent" md-clickable>운전면허</md-chip>
+    <md-chip class="md-accent" md-clickable>건강보험</md-chip>
+    <md-chip class="md-accent" md-clickable>파일형식(이미지,오디오,문서)</md-chip>
+    <md-chip md-disabled>은행계좌</md-chip>
+
     <md-empty-state v-if="iscontainer" style="padding: 10px;"
       class="md-primary"
       md-rounded
@@ -29,6 +44,8 @@
     <md-table-cell md-label="is_pid" md-sort-by="is_pid">{{ item.is_pid }}</md-table-cell>
   </md-table-row>
 </md-table>
+
+
 
 <div>
     <md-dialog :md-active.sync="showDialog" v-if="trainData">

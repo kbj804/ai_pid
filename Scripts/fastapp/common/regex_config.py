@@ -147,22 +147,22 @@ class RegexConfigs:
 
         # 이미지 파일
         imageRegex = re.compile(r'''(
-            (^\w+.(jpg|png|gif|bmp|tif))
+            (([ㄱ-ㅎ|ㅏ-ㅣ|가-힣]|\w)+.(jpg|png|gif|bmp|tif))
         )''', re.VERBOSE)
 
         # 압축파일
         compressionRegex = re.compile(r'''(
-            (\w+.(tar|zip|gzip|alz|egg|iso|7zip))
+            (([ㄱ-ㅎ|ㅏ-ㅣ|가-힣]|\w)+.(tar|zip|gzip|alz|egg|iso|7zip))
         )''', re.VERBOSE)
 
         # 오디오파일
         audioRegex = re.compile(r'''(
-            (^\w+.(mp3|wav))
+            (([ㄱ-ㅎ|ㅏ-ㅣ|가-힣]|\w)+.(mp3|wav))
         )''', re.VERBOSE)
 
         # 문서파일
         docRegex = re.compile(r'''(
-            (^\w+.(pdf|rtf|html|xml|csv|txt|ppt|hwp|xlxs|docx|log))
+            (([ㄱ-ㅎ|ㅏ-ㅣ|가-힣]|\w)+.(pdf|rtf|html|xml|csv|txt|ppt|hwp|xlxs|docx|log))
         )''', re.VERBOSE)
 
 
