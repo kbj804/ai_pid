@@ -219,6 +219,7 @@ class loadFileManager:
 
     # csv 코덱문제 해결하고 엑셀읽기 하고 html읽기 하면됨 
     def read_csv(self):
+        result=[]
         read_list=[]
         with open(self.path, 'r', encoding='UTF8') as file:
             file_read = csv.reader(file)
@@ -227,8 +228,10 @@ class loadFileManager:
 
             # 2차원 리스트 -> 1차원으로
             answer = sum(read_list,[])
-        
-        return '\n'.join(answer)
+
+        result.append({"page":1, "td": '\n'.join(answer) })
+
+        return result
 
     # 리스트 값 안에 숫자형도 있어서 \n . join 사용이 안됨
     # 리스트가 3차원 까지 가서 코드가 다소 복잡함
@@ -239,8 +242,10 @@ class loadFileManager:
         sheet_list = workbook.sheetnames
         all_sheet_value=[]
         
+        result =[]
+        
         # Sheet 별 탐색
-        for sheet in sheet_list:
+        for i, sheet in enumerate(sheet_list):
             all_values = []
             workSheet = workbook[sheet]
             for row in workSheet.rows:
@@ -253,12 +258,16 @@ class loadFileManager:
                 all_values.append(row_value)
             # 차원축소1
             answer = sum(all_values,[])
-            all_sheet_value.append(answer)
-        # 차원축소2
-        answer2 = sum(all_sheet_value, [])
+            
+            # answer가 list인데, 내부 요소중에 int type이 있어서 그냥 join이 불가능함. 그래서 list(map) 함수로 int를 문자로 바꾼 후 작업
+            result.append({"page":i+1, "td": ' '.join(list(map(str,answer)))})
+
+        #     all_sheet_value.append(answer)
+        # # 차원축소2
+        # answer2 = sum(all_sheet_value, [])
 
         # 리스트 강제로 str로 함 ㅠ
-        return str(answer2)
+        return result
         
 
     def read_txt(self):
@@ -280,5 +289,5 @@ class loadFileManager:
         'html': read_html
     }
     
-# a = loadFileManager(SAMPLE_FOLDER_PATH + 'pdf_sample2.pdf')
-# print(a.data)
+a = loadFileManager(SAMPLE_FOLDER_PATH + 'xlsx_sample.xlsx')
+print(a.data)
