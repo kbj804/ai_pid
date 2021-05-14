@@ -240,7 +240,7 @@ class loadFileManager:
         workbook = openpyxl.load_workbook(self.path, data_only=True)
         # Sheet 목록
         sheet_list = workbook.sheetnames
-        all_sheet_value=[]
+        # all_sheet_value=[]
         
         result =[]
         
@@ -271,9 +271,11 @@ class loadFileManager:
         
 
     def read_txt(self):
+        result:list=[]
         with open(self.path, 'r', encoding='UTF8') as f:
             data = f.read()
-            return data
+            result.append({"page":0, "td": data })
+        return result
     
     def read_html(self):
         pass
@@ -289,5 +291,5 @@ class loadFileManager:
         'html': read_html
     }
     
-# a = loadFileManager(SAMPLE_FOLDER_PATH + 'xlsx_sample.xlsx')
-# print(a.data)
+a = loadFileManager(SAMPLE_FOLDER_PATH + 'txt_sample.txt')
+print(a.data)
