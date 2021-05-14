@@ -229,7 +229,7 @@ class loadFileManager:
             # 2차원 리스트 -> 1차원으로
             answer = sum(read_list,[])
 
-        result.append({"page":1, "td": '\n'.join(answer) })
+        result.append({"page":0, "td": '\n'.join(answer) })
 
         return result
 
@@ -260,7 +260,7 @@ class loadFileManager:
             answer = sum(all_values,[])
             
             # answer가 list인데, 내부 요소중에 int type이 있어서 그냥 join이 불가능함. 그래서 list(map) 함수로 int를 문자로 바꾼 후 작업
-            result.append({"page":i+1, "td": ' '.join(list(map(str,answer)))})
+            result.append({"page":i, "td": ' '.join(list(map(str,answer)))})
 
         #     all_sheet_value.append(answer)
         # # 차원축소2
@@ -289,5 +289,5 @@ class loadFileManager:
         'html': read_html
     }
     
-a = loadFileManager(SAMPLE_FOLDER_PATH + 'xlsx_sample.xlsx')
-print(a.data)
+# a = loadFileManager(SAMPLE_FOLDER_PATH + 'xlsx_sample.xlsx')
+# print(a.data)

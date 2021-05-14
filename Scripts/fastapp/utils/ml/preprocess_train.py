@@ -17,7 +17,7 @@ def preprocess(results:list):
     학습용 Data Frame 생성
     """
     data: list = []
-    columns = ['id','reg_count','col1','col2','col3','col4','col5','col6','col7','col8','col9','col10','y']
+    columns = ['id','reg_count','col1','col2','col3','col4','col5','col6','col7','col8','col9','col10']
     for _, r in enumerate(results):
         a=[]
         a.append(r.id)
@@ -36,7 +36,7 @@ def preprocess(results:list):
         # a.append(r.column8)
         # a.append(r.column9)
         # a.append(r.column10)
-        a.append(r.y)
+        # a.append(r.y)
         data.append(a)
     
     print(pd.DataFrame(data, columns=columns))
