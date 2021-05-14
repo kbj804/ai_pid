@@ -1,19 +1,13 @@
 <template>
   <div class="center">
     
-
-    <md-chip class="md-accent" md-clickable>전화번호</md-chip>
-    <md-chip class="md-accent" md-clickable>휴대폰</md-chip>
-    <md-chip class="md-accent" md-clickable>이메일</md-chip>
-    <md-chip class="md-accent" md-clickable>주민등록번호</md-chip>
-    <md-chip class="md-accent" md-clickable>계좌번호</md-chip>
-    <md-chip class="md-accent" md-clickable>IP주소</md-chip>
-    <md-chip class="md-accent" md-clickable>MAC주소</md-chip>
-    <md-chip class="md-accent" md-clickable>여권번호</md-chip>
-    <md-chip class="md-accent" md-clickable>운전면허</md-chip>
-    <md-chip class="md-accent" md-clickable>건강보험</md-chip>
-    <md-chip class="md-accent" md-clickable>파일형식(이미지,오디오,문서)</md-chip>
-    <md-chip md-disabled>은행계좌</md-chip>
+    <div style="padding: 20px">
+    <md-chip v-for="reg in regList" :key="reg" class="md-accent" md-clickable>{{reg}}</md-chip>
+    
+    <md-chip md-disabled>은행계좌
+      <md-tooltip md-direction="bottom">추후 지원</md-tooltip>
+    </md-chip>
+    </div>
 
     <md-empty-state v-if="iscontainer" style="padding: 10px;"
       class="md-primary"
@@ -151,6 +145,9 @@ import axios from "axios";``
           col1:0, col2:0, col3:0, col4:0, col5:0, col6:0, col7:0, col8:0, col9:0, col10:0,
         },
         
+        regList:[
+          '대외비', '이메일', '주민등록번호', '계좌번호', 'IP Address', 'MAC Address', '여권번호', '운전면허', '건강보험', '파일확장자'
+        ]
       }
     },
 

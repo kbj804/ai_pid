@@ -104,6 +104,8 @@ async def get_predict_file_id(request: Request, file_id: int):
     
     result_list = [i+1 for  i, value in enumerate(hoo.preds) if value == 1]
     # model = load_ml_model(USING_MODEL_PATH)
+    if not result_list:
+        return "NO PID"
 
     return result_list
 

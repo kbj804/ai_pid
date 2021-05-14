@@ -30,9 +30,11 @@
       <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
     </div> -->
 
-    <div v-if="error" class="error">
-      {{ error }}
-    </div>
+<md-dialog-alert :md-active.sync="errorDialog" v-if="error"
+                md-title="ERROR!"
+                :md-content="error"
+                >
+</md-dialog-alert>
 
 <div>
     <md-dialog :md-active.sync="showDialog" v-if="trainData">
@@ -144,6 +146,7 @@ export default {
                       }, 1000)
 
                   }).catch((error) => {
+                      this.errorDialog = true
                       this.isSpinner = false
                       this.error = error.toString()
                       console.log(error);
@@ -167,6 +170,7 @@ export default {
                       console.log("RESPONSE");
                       console.log(response);
                   }).catch((error) => {
+                      this.errorDialog = true
                       this.isSpinner = false
                       this.error = error.toString()
                       console.log(error);
@@ -181,6 +185,7 @@ export default {
       return{
         boolean:false,
         showDialog: false,
+        errorDialog: false,
         isSpinner: false,
         selected: null,
         trainData: null,

@@ -57,5 +57,4 @@ def fibo(f,b):
         return front, back, result
 
     return nacci
-
-
+    
