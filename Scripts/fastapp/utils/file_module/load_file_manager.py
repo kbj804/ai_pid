@@ -198,24 +198,38 @@ class loadFileManager:
     def read_docx(self):
         # with open(self.path, 'rb') as f:
         #     source_stream = StringIO(f.read())
-        import re
+        # import re
         document = Document(self.path)
-        pn = 1 
+        # pn = 1 
         fullText = []
+        ccc = 1
         for para in document.paragraphs:
-            r=re.match('Chapter \d+',para.text)
-            if r:
-                print(r.group(),pn)
-            for run in para.runs:
-                print(run._element.xml)
-                if 'w:br' in run._element.xml and 'type="page"' in run._element.xml:
-                    pn+=1
-                    print('!!','='*50, pn)
-            print(para.text)
-            fullText.append(para.text)
+            # r = re.match('Chapter \d+', para.text)
+            # print(para.text)
+            # if r:
+            #     print(r.group(),pn)
+            # for run in para.runs:
+            #     print(run._element.xml)
+                # if 'w:br' in run._element.xml and 'type="page"' in run._element.xml:
+                #     print(run._element.xml)
+                    # pn+=1
+                    # print('!!','='*50, pn)
+            # print(para.text)
+            # fullText.append(para.text)
         # source_stream.close()
+            # print(para.paragraph_format.page_break_before)
+            
+            for run in para.runs:
+                if 'lastRenderedPageBreak' in run._element.xml:
+                    ccc += 1
+                    print(f"{ccc}page -> text: {run.text}")
+                    print(run._element.xml)
+                elif 'type="page"' in run._element.xml:
+                    ccc += 1
+                    print(f"{ccc}page -> 공백: {run.text}")
 
         return '\n'.join(fullText)
+
 
     # csv 코덱문제 해결하고 엑셀읽기 하고 html읽기 하면됨 
     def read_csv(self):
@@ -291,5 +305,5 @@ class loadFileManager:
         'html': read_html
     }
     
-a = loadFileManager(SAMPLE_FOLDER_PATH + 'txt_sample.txt')
-print(a.data)
+a = loadFileManager(SAMPLE_FOLDER_PATH + 'docx_sample4.docx')
+# print(a.data)
