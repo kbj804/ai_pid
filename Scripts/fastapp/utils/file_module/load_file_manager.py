@@ -195,7 +195,7 @@ class loadFileManager:
  
         return '\n'.join(text_runs)
 
-    def read_docx(self):
+    def read_docx2(self):
         # with open(self.path, 'rb') as f:
         #     source_stream = StringIO(f.read())
         # import re
@@ -229,6 +229,15 @@ class loadFileManager:
                     print(f"{ccc}page -> 공백: {run.text}")
 
         return '\n'.join(fullText)
+
+    def read_docx(self):
+        from docx2pdf import convert
+        SAMPLE_FOLDER_PATH = r'D:\\Project\\pid\\Scripts\\fastapp\\data\\samples\\'
+        output = SAMPLE_FOLDER_PATH + "output.pdf"
+        convert(self.path, output)
+        
+        self.path = output
+        return self.read_pdf()
 
 
     # csv 코덱문제 해결하고 엑셀읽기 하고 html읽기 하면됨 
@@ -305,5 +314,6 @@ class loadFileManager:
         'html': read_html
     }
     
-a = loadFileManager(SAMPLE_FOLDER_PATH + 'docx_sample4.docx')
-# print(a.data)
+# a = loadFileManager(SAMPLE_FOLDER_PATH + 'docx_sample4.docx')
+a = loadFileManager(SAMPLE_FOLDER_PATH + 'KPMG_2020 CES.pdf')
+print(a.data)
