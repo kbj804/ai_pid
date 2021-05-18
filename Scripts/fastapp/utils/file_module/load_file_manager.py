@@ -159,16 +159,22 @@ class loadFileManager:
 
 
     def read_pptx(self):
-        pptxdoc = Presentation(self.path)
+        """
         # text_runs will be populated with a list of strings,
         # one for each text run in presentation
+        """
+        pptxdoc = Presentation(self.path)
+        result :list = []
+        
         text_runs = []
-        for slide in pptxdoc.slides:
+        table_runs = []
+
+        for pn, slide in enumerate(pptxdoc.slides):
             for shape in slide.shapes:
                 if shape.has_text_frame:
-                    # print("text")
-                    if not shape.has_text_frame:
-                        continue
+                    # 이게 왜 필요하지
+                    # if not shape.has_text_frame:
+                    #     continue
                     for paragraph in shape.text_frame.paragraphs:
                         # 1. run -> 모든 내용 제목 까지 전부다
                         for run in paragraph.runs:
@@ -176,7 +182,7 @@ class loadFileManager:
 
                         # 2. paragraph -> 페이지별로 구분됨
                         # text_runs.append(paragraph.text)
-                
+
                 elif shape.has_table:
                     # print("table")
                     tb1 = shape.table
@@ -188,21 +194,28 @@ class loadFileManager:
                             paragraphs = cell.text_frame.paragraphs 
                             for paragraph in paragraphs:
                                 for run in paragraph.runs:
-                                    text_runs.append(run.text)
+                                    table_runs.append(run.text)
+                        table_runs.append('\n')
                 else:
-                    # print("etc")
+                    # 기타 이미지나 뭐 그런거,,
                     pass
- 
-        return '\n'.join(text_runs)
+            # print(text_runs))
+            result.append({"page":pn, "td": ' '.join(text_runs), "table": '|'.join(table_runs) })
 
-    def read_docx2(self):
+        # result.append({"page":0, "td": '\n'.join(answer) })
+        # print(' '.join(text_runs))
+        return result
+
+    def read_docx(self):
+        """
+        Docx File 변환인데, TEXT, TABLE은 어떻게든 가능하나 Page를 뽑는게 안됨
+        """
         # with open(self.path, 'rb') as f:
         #     source_stream = StringIO(f.read())
         # import re
         document = Document(self.path)
-        # pn = 1 
         fullText = []
-        ccc = 1
+        pn = 1
         for para in document.paragraphs:
             # r = re.match('Chapter \d+', para.text)
             # print(para.text)
@@ -218,26 +231,22 @@ class loadFileManager:
             # fullText.append(para.text)
         # source_stream.close()
             # print(para.paragraph_format.page_break_before)
-            
             for run in para.runs:
                 if 'lastRenderedPageBreak' in run._element.xml:
-                    ccc += 1
-                    print(f"{ccc}page -> text: {run.text}")
-                    print(run._element.xml)
-                elif 'type="page"' in run._element.xml:
-                    ccc += 1
-                    print(f"{ccc}page -> 공백: {run.text}")
+                    pn += 1
+                    print(f"{pn}page -> text: {run.text}")
+                    # print(run._element.xml)
 
         return '\n'.join(fullText)
 
-    def read_docx(self):
-        from docx2pdf import convert
-        SAMPLE_FOLDER_PATH = r'D:\\Project\\pid\\Scripts\\fastapp\\data\\samples\\'
-        output = SAMPLE_FOLDER_PATH + "output.pdf"
-        convert(self.path, output)
+    # def read_docx(self):
+    #     from docx2pdf import convert
+    #     SAMPLE_FOLDER_PATH = r'D:\\Project\\pid\\Scripts\\fastapp\\data\\samples\\'
+    #     output = SAMPLE_FOLDER_PATH + "output.pdf"
+    #     convert(self.path, output)
         
-        self.path = output
-        return self.read_pdf()
+    #     self.path = output
+    #     return self.read_pdf()
 
 
     # csv 코덱문제 해결하고 엑셀읽기 하고 html읽기 하면됨 
@@ -313,7 +322,7 @@ class loadFileManager:
         'txt': read_txt,
         'html': read_html
     }
-    
+
 # a = loadFileManager(SAMPLE_FOLDER_PATH + 'docx_sample4.docx')
-a = loadFileManager(SAMPLE_FOLDER_PATH + 'KPMG_2020 CES.pdf')
+a = loadFileManager(SAMPLE_FOLDER_PATH + 'pptx_sample2.pptx')
 print(a.data)

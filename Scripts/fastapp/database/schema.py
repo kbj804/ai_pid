@@ -217,7 +217,7 @@ class Train(Base, BaseMixin):
 class Files(Base, BaseMixin):
     __tablename__="files"
     name = Column(String, nullable=False)
-    ext =  Column(Enum("pdf", "docx", "txt","csv","xlsx"), nullable=False)
+    ext =  Column(Enum("pdf", "docx", "txt","csv","xlsx", "pptx"), nullable=False)
     is_pid = Column(Boolean, default=False)
     ip_add = Column(String, nullable=True)
     file_path = Column(String, nullable=True)
