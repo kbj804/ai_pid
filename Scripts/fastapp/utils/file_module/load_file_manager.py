@@ -166,10 +166,11 @@ class loadFileManager:
         pptxdoc = Presentation(self.path)
         result :list = []
         
-        text_runs = []
-        table_runs = []
 
         for pn, slide in enumerate(pptxdoc.slides):
+            text_runs = []
+            table_runs = []
+            
             for shape in slide.shapes:
                 if shape.has_text_frame:
                     # 이게 왜 필요하지
@@ -324,5 +325,5 @@ class loadFileManager:
     }
 
 # a = loadFileManager(SAMPLE_FOLDER_PATH + 'docx_sample4.docx')
-a = loadFileManager(SAMPLE_FOLDER_PATH + 'pptx_sample2.pptx')
-print(a.data)
+# a = loadFileManager(SAMPLE_FOLDER_PATH + 'pptx_sample2.pptx')
+# print(a.data)
