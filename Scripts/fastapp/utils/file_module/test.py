@@ -6,7 +6,7 @@ import pandas as pd
 
 from Scripts.fastapp.common.consts import SAMPLE_FOLDER_PATH, KEYWORD_DICTIONARY_PATH
 
-def test_func(file_name):
+def t_load_data(file_name):
     origin_regex = regexDictionaryManager()
     file = loadFileManager(SAMPLE_FOLDER_PATH + file_name)
 

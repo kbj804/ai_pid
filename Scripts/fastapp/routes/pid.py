@@ -16,7 +16,7 @@ import secrets
 from inspect import currentframe as frame
 
 from Scripts.fastapp.models import MessageOk, Test, Label
-from Scripts.fastapp.utils.file_module.test import test_func
+from Scripts.fastapp.utils.file_module.test import t_load_data
 
 from Scripts.fastapp.utils.file_module.load_file_manager import loadFileManager
 from Scripts.fastapp.utils.preprocess_reg import preprocess_reg
@@ -73,10 +73,14 @@ async def show_data(request: Request, id: int):
 # @router.post("/register", status_code=201, response_model=Label)
 @router.post("/register/{file_path}", status_code=201)
 async def input_data(file_path ,request: Request, session: Session = Depends(db.session)):
+    """
+    file path를 입력해서 해당 파일을 DB에 등록하는 함수
+    지금은 사용 안함
+    """
     print("start#########################################")
     request.state.inspect = frame()
     print(file_path)
-    df = test_func(file_path)
+    df = t_load_data(file_path)
     for row in df.itertuples():
         print(row)
         print(row.page)

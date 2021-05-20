@@ -162,6 +162,7 @@ class loadFileManager:
         """
         # text_runs will be populated with a list of strings,
         # one for each text run in presentation
+        Doc : https://python-pptx.readthedocs.io/en/latest/api/slides.html#slides-objects
         """
         pptxdoc = Presentation(self.path)
         result :list = []
@@ -170,7 +171,7 @@ class loadFileManager:
         for pn, slide in enumerate(pptxdoc.slides):
             text_runs = []
             table_runs = []
-            
+
             for shape in slide.shapes:
                 if shape.has_text_frame:
                     # 이게 왜 필요하지
