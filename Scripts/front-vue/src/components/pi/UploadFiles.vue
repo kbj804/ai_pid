@@ -6,14 +6,14 @@
       md-description="Uploading files, you'll be able to show your file's contents and verify to Personal Information.">
       <md-input-container>
         <md-field>
-          <label>Only PDF Files</label>
+          <label>지원하는 확장자 하단 참조</label>
           <md-file v-model="file.name" @md-change="onFileUpload($event)" />
            <md-button class="md-primary md-raised" @click.native="submit()">Verify File</md-button>
         </md-field>
       </md-input-container>
     </md-empty-state>
     <md-field v-else>
-          <label>Only PDF Files</label>
+          <label>지원하는 확장자 하단 참조</label>
           <md-file v-model="file.name" @md-change="onFileUpload($event)" />
            <md-button class="md-primary md-raised" @click.native="submit()">Verify File</md-button>
         </md-field>
@@ -37,11 +37,21 @@
 
 </md-table>
 
+<div style="padding: 20px; left: 48%; position: fixed;">
+  <md-chip v-for="reg in regList" :key="reg" class="md-primary" md-clickable>{{reg}}</md-chip>
 
-
-<div v-if="error" class="error">
-      {{ error }}
+  <md-chip md-disabled>docx
+    <md-tooltip md-direction="bottom">추후 지원</md-tooltip>
+  </md-chip>
 </div>
+
+
+
+<md-dialog-alert :md-active.sync="errorDialog" v-if="error"
+                md-title="ERROR!"
+                :md-content="(error.data.msg ? error.data.msg : error.statusText)"
+                >
+</md-dialog-alert>
 
   </div>
 </template>
@@ -56,6 +66,7 @@ import axios from "axios";
       return{
         boolean:false,
         isSpinner: false,
+        errorDialog: false,
         file: {
           name:'Click to here'
           },
@@ -65,6 +76,11 @@ import axios from "axios";
         filename:null,
         iscontainer: true,
         selected: {},
+
+        regList:[
+          "pdf", "txt","csv","xlsx", "pptx"
+        ]
+
       }
     },
 
@@ -72,7 +88,7 @@ import axios from "axios";
       onFileUpload (evt) {
           console.log(evt)
           this.file = evt[0]
-          console.log("zdasdadddsad")
+          console.log("Upload File Info")
           console.log(this.file)
       },
 
@@ -97,9 +113,11 @@ import axios from "axios";
                     console.log(response);
 
                 }).catch((error) => {
-                    this.isSpinner = false
-                    this.error = error.toString()
-                    console.log(error);
+                    this.isSpinner = false,
+                    this.errorDialog = true,
+                    // this.error = error.toString()
+                    this.error = error.response
+                    console.log(error.response);
                 })
       },
       onSelect (item) {

@@ -56,7 +56,7 @@ async def show_data(request: Request, ispid):
     return result
 
 @router.get('/getTrain')
-async def show_data(request: Request, id: int):
+async def get_train_data(request: Request, id: int):
     """
     no params\n
     :return\n
@@ -147,16 +147,21 @@ async def create_upload_files(request: Request, files: List[UploadFile] = File(.
         with open(UPLOAD_DIRECTORY + file.filename, "wb") as fp:
             fp.write(contents)
         f = loadFileManager(UPLOAD_DIRECTORY + file.filename)
-        obj = Files.create(session, auto_commit=False, name=f.name, ext=f.ext, ip_add= request.state.ip )
-        # print(obj.id, f.name, f.ext, f.data)
+        try:
+            obj = Files.create(session, auto_commit=False, name=f.name, ext=f.ext, ip_add= request.state.ip )
+            # print(obj.id, f.name, f.ext, f.data)
 
-        for p in f.data:
-            df = preprocess_reg(p["td"])
-            Train.create(session, auto_commit=True, file_id=obj.id ,y=-1, page=p["page"]+1, text_data=p["td"],
-                                                    reg_count=int(df["reg_count"][0]), column1=int(df["col1"][0]), column2=int(df["col2"][0]),
-                                                    column3=int(df["col3"][0]),column4=int(df["col4"][0]),column5=int(df["col5"][0]),column6=int(df["col6"][0]),
-                                                    column7=int(df["col7"][0]),column8=int(df["col8"][0]),column9=int(df["col9"][0]),column10=int(df["col10"][0])
-                        )
+            for p in f.data:
+                df = preprocess_reg(p["td"])
+                Train.create(session, auto_commit=True, file_id=obj.id ,y=-1, page=p["page"]+1, text_data=p["td"],
+                                                        reg_count=int(df["reg_count"][0]), column1=int(df["col1"][0]), column2=int(df["col2"][0]),
+                                                        column3=int(df["col3"][0]),column4=int(df["col4"][0]),column5=int(df["col5"][0]),column6=int(df["col6"][0]),
+                                                        column7=int(df["col7"][0]),column8=int(df["col8"][0]),column9=int(df["col9"][0]),column10=int(df["col10"][0])
+                            )
+
+        except Exception as e:
+            raise ex.FileExtEx(file.filename, e)
+
     # 마지막 파일 f.data
     return f.data
 

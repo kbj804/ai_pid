@@ -155,3 +155,14 @@ class NotFoundAccessKeyEx(APIException):
             code=f"{StatusCode.HTTP_404}{'10'.zfill(4)}",
             ex=ex,
         )
+
+class FileExtEx(APIException):
+    def __init__(self, file_name:str,  ex: Exception = None):
+        super().__init__(
+            status_code=StatusCode.HTTP_400,
+            msg=f"지원하지 않는 확장자 입니다.",
+            detail=f"Not support EXT : {file_name}",
+            code=f"{StatusCode.HTTP_400}{'10'.zfill(4)}",
+            ex=ex,
+        )
+
