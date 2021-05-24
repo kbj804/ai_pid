@@ -18,40 +18,40 @@
            <md-button class="md-primary md-raised" @click.native="submit()">Verify File</md-button>
         </md-field>
   
-  <div v-if="isSpinner">
-    <!-- <md-progress-spinner md-mode="indeterminate"></md-progress-spinner> -->
-    <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
-  </div>
+    <div v-if="isSpinner">
+      <!-- <md-progress-spinner md-mode="indeterminate"></md-progress-spinner> -->
+      <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
+    </div>
 
-<md-table v-model="post.data" v-if="post" md-card md-fixed-header @md-selected="onSelect">
-  <md-table-toolbar>
-    <h1 class="md-title">{{filename}}</h1>
-  </md-table-toolbar>
+    <md-table v-model="post.data" v-if="post" md-card md-fixed-header @md-selected="onSelect">
+      <md-table-toolbar>
+        <h1 class="md-title">{{filename}}</h1>
+      </md-table-toolbar>
 
-  <!-- <md-table-row slot="md-table-row" slot-scope="{ item }" :class="getClass(item)" md-selectable="single"> -->
-    <md-table-row slot="md-table-row" slot-scope="{ item }" class="md-accent" md-selectable="single">
-    <md-table-cell md-label="Page" md-sort-by="page" md-numeric>{{ item.page+1 }}</md-table-cell>
-    <md-table-cell md-label="TextData" md-sort-by="textdata">{{ item.td }}</md-table-cell>
-  </md-table-row>
-
-
-</md-table>
-
-<div style="padding: 20px; left: 48%; position: fixed;">
-  <md-chip v-for="reg in regList" :key="reg" class="md-primary" md-clickable>{{reg}}</md-chip>
-
-  <md-chip md-disabled>docx
-    <md-tooltip md-direction="bottom">추후 지원</md-tooltip>
-  </md-chip>
-</div>
+      <!-- <md-table-row slot="md-table-row" slot-scope="{ item }" :class="getClass(item)" md-selectable="single"> -->
+        <md-table-row slot="md-table-row" slot-scope="{ item }" class="md-accent" md-selectable="single">
+        <md-table-cell md-label="Page" md-sort-by="page" md-numeric>{{ item.page+1 }}</md-table-cell>
+        <md-table-cell md-label="TextData" md-sort-by="textdata">{{ item.td }}</md-table-cell>
+      </md-table-row>
 
 
+    </md-table>
 
-<md-dialog-alert :md-active.sync="errorDialog" v-if="error"
-                md-title="ERROR!"
-                :md-content="(error.data.msg ? error.data.msg : error.statusText)"
-                >
-</md-dialog-alert>
+    <div style="padding: 20px; left: 48%; position: fixed;">
+      <md-chip v-for="reg in regList" :key="reg" class="md-primary" md-clickable>{{reg}}</md-chip>
+
+      <md-chip md-disabled>docx
+        <md-tooltip md-direction="bottom">추후 지원</md-tooltip>
+      </md-chip>
+    </div>
+
+
+
+    <md-dialog-alert :md-active.sync="errorDialog" v-if="error"
+                    md-title="ERROR!"
+                    :md-content="(error.data.msg ? error.data.msg : error.statusText)"
+                    >
+    </md-dialog-alert>
 
   </div>
 </template>
@@ -116,8 +116,9 @@ import axios from "axios";
                     this.isSpinner = false,
                     this.errorDialog = true,
                     // this.error = error.toString()
+                    
                     this.error = error.response
-                    console.log(error.response);
+                    console.log(error);
                 })
       },
       onSelect (item) {
