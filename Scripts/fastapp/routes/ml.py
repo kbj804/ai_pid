@@ -190,7 +190,6 @@ async def upload_files_predict_y(request: Request, docid: str, files: List[Uploa
             total_reg_count += df["reg_count"][0]
             
             if df["reg_count"][0] > 0:
-                ispid = "T"
                 pageList.append(str(page))
 
             Train.create(session, auto_commit=True, file_id=obj.id ,y=-1, page=p["page"]+1, text_data=p["td"],
@@ -198,9 +197,27 @@ async def upload_files_predict_y(request: Request, docid: str, files: List[Uploa
                                                     column3=int(df["col3"][0]),column4=int(df["col4"][0]),column5=int(df["col5"][0]),column6=int(df["col6"][0]),
                                                     column7=int(df["col7"][0]),column8=int(df["col8"][0]),column9=int(df["col9"][0]),column10=int(df["col10"][0])
                         )
+        
+
+        page_list = Train.filter(file_id=obj.id).order_by("page").all()
+        df = preprocess(page_list)
+        hf = hoo.df_to_hf(df)
+        hoo.predict(hf)
+        
+        result_list = [str(p+1) for  p, value in enumerate(hoo.preds) if value == 1]
+        # model = load_ml_model(USING_MODEL_PATH)
+        if result_list:
+            ispid = "T"
+
+            info = literal_eval("{'is_pid': True}") # literal_eval: str -> dict
+            ret = Files.filter(id=obj.id)
+            ret.update(auto_commit=True, **info)
+
+
+
 
     pinfo_data = {"name":"ext:pinfo", "value": ispid }
-    pPage_data = {"name":"ext:pPage", "value": ', '.join(pageList) }
+    pPage_data = {"name":"ext:pPage", "value": ', '.join(result_list) }
 
     file_data["attrData"] = {"docId": docid, "attrList":[pinfo_data, pPage_data]}
     print(file_data)

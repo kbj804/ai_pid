@@ -119,6 +119,25 @@ def mergeSort(alist):
     print(f"Merge Sort 중간 과정: {result}")
     return result
 
+
+def fastmerge(array1, array2):
+    merged_array = []
+    while array1 or array2:
+        print(merged_array)
+        if not array1:
+            merged_array.append(array2.pop())
+        elif (not array2) or array1[-1] > array2[-1]:
+            merged_array.append(array1.pop())
+        else:
+            merged_array.append(array2.pop())
+    merged_array.reverse()
+    return merged_array
+
+a1 = [8, 5, 12, 4, 6, 78, 41, 3, 54, 61, 86, 46, 4, 613, 478]
+a2 = [12,658,78,2,45,857,78,358,42,96,44,56,966,75,46]
+print(fastmerge(a1, a2))
+
+
 def quickSort(x):
     """
     # 퀵정렬(Quick Sort)
@@ -140,6 +159,3 @@ def quickSort(x):
                 equal = [a]
     return quickSort(less) + equal + quickSort(more)
 
-a= [45,61,87,52,1,6,8,4,2321,8,324,56,4,3,24,68,1]
-a.sort(reverse=True)
-print(a)
