@@ -156,7 +156,7 @@ async def xedm_response_test(request: Request):
 from Scripts.fastapp.utils.file_module.load_file_manager import loadFileManager
 from Scripts.fastapp.utils.preprocess_reg import preprocess_reg
 
-@router.post("/uploadFiles")
+@router.post("/xedm/uploadFiles")
 async def upload_files_predict_y(request: Request, docid: str, files: List[UploadFile] = File(...) ,session: Session = Depends(db.session)):
     """
     params: docid, file \n
@@ -225,3 +225,18 @@ async def upload_files_predict_y(request: Request, docid: str, files: List[Uploa
 
     # 마지막 파일 f.data
     return str(res.text)
+
+@router.get('/xedm/loadml')
+async def load_ml_for_xedm(request: Request):
+    """
+    no params\n
+    :return\n
+    Load ML Model
+    """
+    request.state.inspect = frame()
+    # result = Train.filter(y=1).all()
+    hoo.load_md(USING_MODEL_PATH)
+    if not hoo.model:
+        raise ex.XedmLoadFailEx()
+
+    return m.MessageOk()

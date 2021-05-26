@@ -166,3 +166,12 @@ class FileExtEx(APIException):
             ex=ex,
         )
 
+class XedmLoadFailEx(APIException):
+    def __init__(self, ex: Exception = None):
+        super().__init__(
+            status_code=StatusCode.HTTP_500,
+            msg=f"Machin Learning Model 로드에 실패하였습니다..",
+            detail=f"Fail the ML Model Load",
+            code=f"{StatusCode.HTTP_500}{'10'.zfill(4)}",
+            ex=ex,
+        )
