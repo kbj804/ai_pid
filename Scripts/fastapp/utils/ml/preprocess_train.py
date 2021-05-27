@@ -53,9 +53,9 @@ def train_save_model(train_data: list):
 
 def load_ml_model(model_path):
     h = H2oClass()
-    model = h.load_md(model_path)
+    model_ = h.load_md(model_path)
 
-    return model
+    return model_
 
 def predict_pid(data, model):
     df = preprocess(data)
@@ -64,15 +64,26 @@ def predict_pid(data, model):
     p = model.predict(d)
 
 
-def pushpushbaby(data):
+def xedm_post(data, sid):
     print("####### PUSH PUSH POST ######")
-    url = "http://183.111.96.15:7086/xedrm/json/updateDocEx"
-    jsondata = json.dumps(data,indent=4)
-    res = requests.post(url, data = jsondata)
+    url = f"http://183.111.96.15:7086/xedrm/json/updateDocEx?sid={sid}"
+    jsondata = json.dumps(data, indent=4)
+    headers = {'Content-Type': 'application/json;'}
+    res = requests.post(url, headers= headers,data = jsondata)
     print(res)
     print(jsondata)
     print("####### PUSH DONE ######")
     return res
+
+def connect_session():
+    print("####### Connection Xedm Session ######")
+    url = 'http://183.111.96.15:7086/xedrm/json/login?isAgent=True&lang=ko&userId=Qmhp/4rwH78=&mode=jwt'
+
+    res = requests.get(url)
+    res = json.loads(res.text)
+    session = res['list'][0]['xedmSession']
+
+    return session
 
 
 # from collections import OrderedDict
@@ -82,5 +93,10 @@ def pushpushbaby(data):
 # pPage_data = {"name":"ext:pPage", "value": "" }
 
 # file_data["attrData"] = {"docId": "2021050310132101", "attrList":[pinfo_data, pPage_data]}
+
+sres = connect_session()
+# sres_d = json.loads(sres.text)
+
+
 # res = pushpushbaby(file_data)
 # print(res.text)

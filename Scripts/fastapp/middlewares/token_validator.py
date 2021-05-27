@@ -124,6 +124,9 @@ async def access_control(request: Request, call_next):
             elif url.startswith("/api/ml"):
                 print("########## /api/ml start ############")
 
+            elif url.startswith("/api/xedm"):
+                print("########## /api/xedm start ############")
+                
             else:
                 if "authorization" in headers.keys():
                     token_info = await token_decode(access_token=headers.get("Authorization"))

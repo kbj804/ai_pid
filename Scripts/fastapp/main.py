@@ -16,7 +16,7 @@ from Scripts.fastapp.common.config import conf
 from Scripts.fastapp.middlewares.token_validator import access_control
 from Scripts.fastapp.middlewares.trusted_hosts import TrustedHostMiddleware
 
-from Scripts.fastapp.routes import index, auth, users, services, pid, ml
+from Scripts.fastapp.routes import index, auth, users, services, pid, ml, xedm
 
 # auto_error False 중요 Swagger 위에 Authorization 버튼 만듬
 API_KEY_HEADER = APIKeyHeader(name="Authorization", auto_error=False)
@@ -53,6 +53,7 @@ def create_app():
 
     # 라우터 정의
     app.include_router(index.router)
+    app.include_router(xedm.router, tags=["Xedm"], prefix="/api")
     app.include_router(ml.router, tags=["Machine Learning"], prefix="/api")
     app.include_router(auth.router, tags=["Authentication"], prefix="/api")
     app.include_router(pid.router, tags=["Personal Information Detection"], prefix="/api")
