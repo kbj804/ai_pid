@@ -1,111 +1,118 @@
 <template>
   <div class="center">
-    <md-empty-state v-if="iscontainer"
-      md-icon="devices_other"
-      md-label="Upload Test Files"
-      md-description="Uploading files, you'll be able to show your file's contents and verify to Personal Information.">
-      <md-input-container>
-        <md-field>
-          <label>Only PDF Files</label>
-          <md-file v-model="file.name" @md-change="onFileUpload($event)" />
-           <md-button class="md-primary md-raised" @click.native="submit()">Verify File</md-button>
-        </md-field>
-      </md-input-container>
-    </md-empty-state>
-    <md-field v-else>
-          <label>Only PDF Files</label>
-          <md-file v-model="file.name" @md-change="onFileUpload($event)" />
-           <md-button class="md-primary md-raised" @click.native="submit()">Verify File</md-button>
-        </md-field>
-  
-  <div v-if="isSpinner">
-    <!-- <md-progress-spinner md-mode="indeterminate"></md-progress-spinner> -->
-    <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
-  </div>
+    <md-progress-bar md-mode="buffer" :md-value="amount" :md-buffer="buffer"></md-progress-bar>
+    <md-progress-bar class="md-accent" md-mode="buffer" :md-value="amount2" :md-buffer="buffer"></md-progress-bar>
+    
+    
+    <md-button class="md-raised" :md-ripple="false" @click="go(2)">GO!</md-button>
+    
+    
+    <!-- <div>
+      Progress <br>
+      <input type="range" v-model.number="amount"> {{ amount }}%
+    </div>
 
-<md-table v-model="post.data" v-if="post" md-card md-fixed-header @md-selected="onSelect">
-  <md-table-toolbar>
-    <h1 class="md-title">{{filename}}</h1>
-  </md-table-toolbar>
-
-  <!-- <md-table-row slot="md-table-row" slot-scope="{ item }" :class="getClass(item)" md-selectable="single"> -->
-    <md-table-row slot="md-table-row" slot-scope="{ item }" class="md-accent" md-selectable="single">
-    <md-table-cell md-label="Page" md-sort-by="page" md-numeric>{{ item.page+1 }}</md-table-cell>
-    <md-table-cell md-label="TextData" md-sort-by="textdata">{{ item.td }}</md-table-cell>
-  </md-table-row>
-
-
-</md-table>
-
-
-
-<div v-if="error" class="error">
-      {{ error }}
-</div>
-
+    <div>
+      Buffer <br>
+      <input type="range" v-model.number="buffer"> {{ buffer }}%
+    </div> -->
   </div>
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 
   export default {
     name: 'EmptyStateBasic',
 
     data () {
       return{
-        isSpinner: false,
-        file: {
-          name:'Click to here'
-          },
-        files:[],
-        post: null,
-        error:null,
-        filename:null,
-        iscontainer: true,
-        selected: {},
+        amount:0,
+        amount2:0,
+        buffer: 0,
+
+        winflag: true,
+        // restaurants
       }
+    },
+    computed: {
+
+
     },
 
     methods: {
-      onFileUpload (evt) {
-          console.log(evt)
-          this.file = evt[0]
-          console.log("zdasdadddsad")
-          console.log(this.file)
+      randomPick(num) {
+        var result = Math.floor(Math.random() * ((num+1) - 1) + 1);
+        return result
       },
 
-      submit () {
-          this.isSpinner = true
-          const formData = new FormData();
-          // this.filename = files[0].name
-          formData.append("files", this.file);
-            this.filename = this.file.name
-            const url = "http://192.168.21.38:8001/api/pid/uploadfiles";
-            axios.post(url, 
-                formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    },
-                
-                }).then(response => {
-                    this.iscontainer = false
-                    this.isSpinner = false
-                    this.post = response
-                    console.log("RESPONSE");
-                    console.log(response);
+      go(n){
 
-                }).catch((error) => {
-                    this.isSpinner = false
-                    this.error = error.toString()
-                    console.log(error);
-                })
+        let idx = 1, tmpAmount = 0, tmpAmount2 = 0;
+
+        while(100 >= tmpAmount && 100 >= tmpAmount2) {
+            const num = this.randomPick(n);
+
+            switch(num){
+              case 1:
+                tmpAmount += 1;
+                break;
+              case 2:
+                tmpAmount2 += 1;
+                break;
+            } 
+            
+            const timeoutId = setTimeout(({tmpAmount, tmpAmount2, num}) => {
+              if(1 === num)
+                this.amount = tmpAmount;
+              else
+                this.amount2 = tmpAmount2;
+
+              if(!(100 >= tmpAmount && 100 >= tmpAmount2)) {
+                clearTimeout(timeoutId);
+                return;
+              }
+            }, idx++ * 100, {tmpAmount, tmpAmount2, num})
+        }
+
+
+        /* 
+          for(let step = 1; step <= 50; step++) {
+              setTimeout(() => {
+                switch(this.randomPick(n)){
+                  case 1:
+                    this.amount += 1;
+                    break;
+                  case 2:
+                    this.amount2 += 1;
+                    break;
+                }
+              }, step * 100)            
+          }
+        */
+
+          /* 
+          for (let step = 1; this.winflag == true; step++){
+            // while(this.winflag){
+              step +=1;
+              if (this.amount === 10 || this.amount2 === 10){
+                this.winflag = false
+              } else {
+                setTimeout(() => {
+                  switch(this.randomPick(n)){
+                    case 1:
+                      this.amount += 1;
+                      break;
+                    case 2:
+                      this.amount2 += 1;
+                      break;
+                  }
+                }, step * 100)
+            }
+          }
+          */
       },
 
-      onSelect (item) {
-            this.selected = item
-      },
-    
     }
 
 
@@ -113,22 +120,8 @@ import axios from "axios";
 </script>
 
 <style lang="scss" scoped>
-  .md-app {
-    max-width: 100%;
-    max-height: 100%;
-    border: 1px solid rgba(#000, .12);
-  }
-
-.md-table + .md-table {
-    margin-top: 16px
-  }
-
-.md-progress-spinner {
+.md-progress-bar {
     margin: 24px;
   }
-
-.center{
-  margin: 0 auto;
-}
 
 </style>
