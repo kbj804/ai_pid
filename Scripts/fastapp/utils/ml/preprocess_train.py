@@ -66,7 +66,8 @@ def predict_pid(data, model):
 
 def xedm_post(data, sid):
     print("####### PUSH PUSH POST ######")
-    url = f"http://183.111.96.15:7086/xedrm/json/updateDocEx?sid={sid}"
+    # url = f"http://183.111.96.15:7086/xedrm/json/updateDocEx?sid={sid}"
+    url = f"http://192.168.21.29:9080/xedrm/json/updateDocEx?sid={sid}"
     jsondata = json.dumps(data, indent=4)
     headers = {'Content-Type': 'application/json;'}
     res = requests.post(url, headers= headers,data = jsondata)

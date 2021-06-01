@@ -52,7 +52,7 @@ async def connect_xedm_session(request: Request):
     if not res:
         raise ex.XedmLoadFailEx()
 
-    return m.MessageOk()
+    return res
 
 
 @router.get('/xedmresponse', response_model = m.XedmToken)
@@ -126,8 +126,12 @@ async def upload_files_predict_y(request: Request, docid: str, sid: str, files: 
         page_list = Train.filter(file_id=obj.id).order_by("page").all()
         df = preprocess(page_list)
         hf = hoo.df_to_hf(df)
+
+        # 모델 안켜져 있을 경우 로드
+        if not hoo.model:
+            hoo.load_md(USING_MODEL_PATH)
         hoo.predict(hf)
-        
+
         result_list = [str(p+1) for  p, value in enumerate(hoo.preds) if value == 1]
         # model = load_ml_model(USING_MODEL_PATH)
         if result_list or total_reg_count > 0:
