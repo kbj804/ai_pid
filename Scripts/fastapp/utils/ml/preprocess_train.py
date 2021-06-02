@@ -95,7 +95,7 @@ def connect_session():
 
 # file_data["attrData"] = {"docId": "2021050310132101", "attrList":[pinfo_data, pPage_data]}
 
-sres = connect_session()
+# sres = connect_session()
 # sres_d = json.loads(sres.text)
 
 

@@ -1,127 +1,80 @@
 <template>
   <div class="center">
-    <md-progress-bar md-mode="buffer" :md-value="amount" :md-buffer="buffer"></md-progress-bar>
-    <md-progress-bar class="md-accent" md-mode="buffer" :md-value="amount2" :md-buffer="buffer"></md-progress-bar>
-    
-    
-    <md-button class="md-raised" :md-ripple="false" @click="go(2)">GO!</md-button>
-    
-    
-    <!-- <div>
-      Progress <br>
-      <input type="range" v-model.number="amount"> {{ amount }}%
-    </div>
-
-    <div>
-      Buffer <br>
-      <input type="range" v-model.number="buffer"> {{ buffer }}%
-    </div> -->
+    <md-table v-model="restaurants" md-card md-fixed-header>
+      <md-table-toolbar>
+          <h1 class="md-title">점심 뭐먹지?</h1>
+      </md-table-toolbar>
+      <md-table-row slot="md-table-row" slot-scope="{ item }" class="md-accent" >
+        <md-table-cell style="width:50px;"  md-label="Name" md-sort-by="name">{{item.name}}</md-table-cell>
+        <md-table-cell  md-label="Progress Bar" md-sort-by="pb"><md-progress-bar md-mode="buffer" :md-value="item.amount" :md-buffer="buffer"/></md-table-cell>
+      </md-table-row>
+    </md-table>
+    <md-button class="md-raised" :md-ripple="false" @click="go">GO!</md-button>
   </div>
 </template>
 
 <script>
-// import axios from "axios";
+  import Vue from 'vue';
 
   export default {
     name: 'EmptyStateBasic',
-
-    data () {
+    data() {
       return{
-        amount:0,
-        amount2:0,
         buffer: 0,
-
-        winflag: true,
-        // restaurants
+        restaurants: [
+          {
+            id: 1,
+            name: "오돈",
+            amount: 0
+          },
+          {
+            id: 2,
+            name: "대문집",
+            amount: 0
+          }
+        ],
       }
     },
-    computed: {
-
-
+    created() {
+        Vue.nextTick(() => {
+            let elementList = document.querySelectorAll('.md-table-head-label');
+            
+            elementList.forEach((element, idx) => {
+                if(0 === idx)
+                    element.style.width = "11px";
+            });
+        })
     },
-
     methods: {
       randomPick(num) {
-        var result = Math.floor(Math.random() * ((num+1) - 1) + 1);
-        return result
+        return Math.floor(Math.random() * ((num + 1) - 1) + 1);
       },
+      go() {
+        let idx = 1, 
+            n = this.restaurants.length, 
+            arr = Array.from({length: n}, () => 0);
 
-      go(n){
-
-        let idx = 1, tmpAmount = 0, tmpAmount2 = 0;
-
-        while(100 >= tmpAmount && 100 >= tmpAmount2) {
+        while(arr.every(element => element <= 100)) {
             const num = this.randomPick(n);
 
-            switch(num){
-              case 1:
-                tmpAmount += 1;
-                break;
-              case 2:
-                tmpAmount2 += 1;
-                break;
-            } 
-            
-            const timeoutId = setTimeout(({tmpAmount, tmpAmount2, num}) => {
-              if(1 === num)
-                this.amount = tmpAmount;
-              else
-                this.amount2 = tmpAmount2;
+            ++arr[num - 1];
 
-              if(!(100 >= tmpAmount && 100 >= tmpAmount2)) {
+            const timeoutId = setTimeout(num => {
+              ++this.restaurants[num - 1].amount;
+
+              if(!(100 >= this.restaurants[num - 1].amount)) {
                 clearTimeout(timeoutId);
                 return;
               }
-            }, idx++ * 100, {tmpAmount, tmpAmount2, num})
+            }, idx++ * 100, num)
         }
-
-
-        /* 
-          for(let step = 1; step <= 50; step++) {
-              setTimeout(() => {
-                switch(this.randomPick(n)){
-                  case 1:
-                    this.amount += 1;
-                    break;
-                  case 2:
-                    this.amount2 += 1;
-                    break;
-                }
-              }, step * 100)            
-          }
-        */
-
-          /* 
-          for (let step = 1; this.winflag == true; step++){
-            // while(this.winflag){
-              step +=1;
-              if (this.amount === 10 || this.amount2 === 10){
-                this.winflag = false
-              } else {
-                setTimeout(() => {
-                  switch(this.randomPick(n)){
-                    case 1:
-                      this.amount += 1;
-                      break;
-                    case 2:
-                      this.amount2 += 1;
-                      break;
-                  }
-                }, step * 100)
-            }
-          }
-          */
       },
-
     }
-
-
   }
 </script>
 
 <style lang="scss" scoped>
 .md-progress-bar {
-    margin: 24px;
-  }
-
+  margin: 24px;
+}
 </style>

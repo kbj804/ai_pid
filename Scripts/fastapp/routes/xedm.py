@@ -136,7 +136,7 @@ def predict_using_h2o(request, docid, sid, session, file):
     file_data["attrData"] = {"docId": docid, "attrList":[pinfo_data, pPage_data]}
     print(file_data)
     res = xedm_post(file_data, sid)
-    print(res)
+    print(res.text)
 
 
 
@@ -156,60 +156,6 @@ async def upload_files_predict_y(request: Request, background_tasks: BackgroundT
             fp.write(contents)
 
         background_tasks.add_task(predict_using_h2o, request = request, docid=docid, sid = sid, session = session, file=file)
-        return m.MessageOk()
-    #     f = loadFileManager(UPLOAD_DIRECTORY + file.filename)
-    #     obj = Files.create(session, auto_commit=False, name=f.name, ext=f.ext, ip_add= request.state.ip, doc_id=docid )
-    #     # print(obj.id, f.name, f.ext, f.data)
-        
-    #     # Init 
-    #     page = 0
-    #     total_reg_count = 0
-
-    #     for p in f.data:
-    #         df = preprocess_reg(p["td"])
-
-    #         page += 1
-    #         total_reg_count += df["reg_count"][0]
-            
-    #         if df["reg_count"][0] > 0:
-    #             pageList.append(str(page))
-
-    #         Train.create(session, auto_commit=True, file_id=obj.id ,y=-1, page=p["page"]+1, text_data=p["td"],
-    #                                                 reg_count=int(df["reg_count"][0]), column1=int(df["col1"][0]), column2=int(df["col2"][0]),
-    #                                                 column3=int(df["col3"][0]),column4=int(df["col4"][0]),column5=int(df["col5"][0]),column6=int(df["col6"][0]),
-    #                                                 column7=int(df["col7"][0]),column8=int(df["col8"][0]),column9=int(df["col9"][0]),column10=int(df["col10"][0])
-    #                     )
-        
-
-    #     page_list = Train.filter(file_id=obj.id).order_by("page").all()
-    #     df = preprocess(page_list)
-    #     hf = hoo.df_to_hf(df)
-
-    #     # 모델 안켜져 있을 경우 로드
-    #     if not hoo.model:
-    #         hoo.load_md(USING_MODEL_PATH)
-    #     hoo.predict(hf)
-
-    #     result_list = [str(p+1) for  p, value in enumerate(hoo.preds) if value == 1]
-    #     # model = load_ml_model(USING_MODEL_PATH)
-    #     if result_list or total_reg_count > 0:
-    #         ispid = "T"
-
-    #         info = literal_eval("{'is_pid': True}") # literal_eval: str -> dict
-    #         ret = Files.filter(id=obj.id)
-    #         ret.update(auto_commit=True, **info)
-
-
-    # pinfo_data = {"name":"ext:pinfo", "value": ispid }
-    # pPage_data = {"name":"ext:pPage", "value": ', '.join(result_list) }
-
-    # file_data["attrData"] = {"docId": docid, "attrList":[pinfo_data, pPage_data]}
-    # print(file_data)
-    # res = xedm_post(file_data, sid)
-
-    # # 마지막 파일 f.data
-    # return str(res.text)
-
-
+    return m.MessageOk()
+ 
     
-
