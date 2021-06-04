@@ -22,6 +22,7 @@
       </md-table-row>
     </md-table>
     <md-button class="md-raised" :md-ripple="false" @click="go">GO!</md-button>
+    <md-button class="md-raised md-accent" @click="refresh">REFRESH!</md-button>
     <md-button class="md-accent" style="float: right" > WINNER: {{winner}} </md-button>
     
     <md-dialog-alert
@@ -57,6 +58,7 @@
     data() {
       return{
         flag: false,
+        stopflag:false,
         rname:[],
         selected: [],
         buffer: 0,
@@ -67,6 +69,7 @@
         ],
         rstrChips:['배꼽집', '대문집', '진주집', '중국집', '쌀국수', '고등어', '분식', '순대국'],
         winner: null,
+        lastTimeoutID: null,
       }
     },
     created() {
@@ -109,26 +112,38 @@
         let idx = 1, 
             n = this.restaurants.length, 
             arr = Array.from({length: n}, () => 0);
-
+          
         while(arr.every(element => element <= 100)) {
             const num = this.randomPick(n);
             ++arr[num - 1];
             let winnerIndex = arr.indexOf(Math.max(...arr));
 
             const timeoutId = setTimeout(obj => {
-              ++this.restaurants[obj.num - 1].amount;
-              this.winner = this.restaurants[obj.winnerIndex].name
-
+              console.log(timeoutId)
+              if(this.stopflag) {
+                  console.log(1)
+                  this.restaurants[obj.num - 1].amount = 0;
+                  // this.stopflag = false;
+                  clearTimeout(timeoutId);
+                  return;
+              }
               if(!(100 >= this.restaurants[obj.num - 1].amount)) {
                 this.flag = true;
-                clearTimeout(timeoutId);
-                
-                return;
+                //clearTimeout(timeoutId);
+                //return;
               }
+              ++this.restaurants[obj.num - 1].amount;
+              this.winner = this.restaurants[obj.winnerIndex].name
             }, idx++ * 100, {num, winnerIndex})
         }
         
       },
+      refresh() {
+        let n = this.restaurants.length
+        for(let i = 0; i < n ; i ++) this.restaurants[i].amount = 0;
+        this.stopflag = true;
+      },
+
       deleter() {
         this.selected.forEach(ele => {
             const idx = this.restaurants.findIndex(element => element.name === ele.name)
