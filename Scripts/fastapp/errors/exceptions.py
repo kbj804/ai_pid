@@ -175,3 +175,13 @@ class XedmLoadFailEx(APIException):
             code=f"{StatusCode.HTTP_500}{'10'.zfill(4)}",
             ex=ex,
         )
+
+class XedmUploadFailEx(APIException):
+    def __init__(self, ex: Exception = None):
+        super().__init__(
+            status_code=StatusCode.HTTP_400,
+            msg=f"File Upload에 실패했습니다.",
+            detail=f"Fail the File Upload",
+            code=f"{StatusCode.HTTP_400}{'10'.zfill(4)}",
+            ex=ex,
+        )

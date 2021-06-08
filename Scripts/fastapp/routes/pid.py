@@ -160,7 +160,7 @@ async def create_upload_files(request: Request, files: List[UploadFile] = File(.
                             )
 
         except Exception as e:
-            raise ex.FileExtEx(file.filename, e)
+            raise ex.FileExtEx(file.filename)
 
     # 마지막 파일 f.data
     return f.data

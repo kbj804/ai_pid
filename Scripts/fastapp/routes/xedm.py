@@ -2,7 +2,6 @@ from typing import List
 
 from fastapi import APIRouter, Depends, FastAPI, File, UploadFile, BackgroundTasks
 from future.utils import PY2
-from h2o.h2o import resume
 from sqlalchemy.orm import Session
 from starlette.requests import Request
 
@@ -16,6 +15,8 @@ from inspect import currentframe as frame
 from Scripts.fastapp.utils.ml.h2o_helper import H2oClass
 from Scripts.fastapp.utils.ml.preprocess_train import preprocess, xedm_post, connect_session
 
+from Scripts.fastapp.common.config import get_logger
+
 import json
 from collections import OrderedDict
 
@@ -23,6 +24,7 @@ from ast import literal_eval
 
 import os
 router = APIRouter(prefix='/xedm')
+logger = get_logger()
 
 hoo = H2oClass()
 
@@ -88,13 +90,17 @@ def predict_using_h2o(request, docid, sid, session, file):
     ispid: str = 'F'
 
     f = loadFileManager(UPLOAD_DIRECTORY + file.filename)
+    
+    if not f.data:
+        raise ex.FileExtEx(f.name)
+
     obj = Files.create(session, auto_commit=False, name=f.name, ext=f.ext, ip_add= request.state.ip, doc_id=docid )
     # print(obj.id, f.name, f.ext, f.data)
     
     # Init 
     page = 0
     total_reg_count = 0
-
+    logger.info(f.data)
     for p in f.data:
         df = preprocess_reg(p["td"])
 
@@ -143,11 +149,13 @@ def predict_using_h2o(request, docid, sid, session, file):
 @router.post("/uploadFiles")
 async def upload_files_predict_y(request: Request, background_tasks: BackgroundTasks,docid: str, sid: str, files: List[UploadFile] = File(...) ,session: Session = Depends(db.session)):
     """
-    params: docid, file \n
+    params: docid, sid(session id) file \n
     return: Last File's \n
     return Sample: \n
-    "url: api/ml/xedmresponse"의 Response 참조
+    "OK"
     """
+    if not files:
+        raise ex.XedmUploadFailEx()
     for file in files:
         contents = await file.read()
         print(os.path.join('./', file.filename))
@@ -158,4 +166,3 @@ async def upload_files_predict_y(request: Request, background_tasks: BackgroundT
         background_tasks.add_task(predict_using_h2o, request = request, docid=docid, sid = sid, session = session, file=file)
     return m.MessageOk()
  
-    
