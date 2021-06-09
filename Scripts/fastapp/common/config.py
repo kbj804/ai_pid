@@ -76,4 +76,8 @@ def get_logger():
     # 로그 레벨 정의
     __logger.setLevel(logging.DEBUG)
 
+    file_handler = logging.FileHandler('my.log')
+    file_handler.setFormatter(formatter)
+    __logger.addHandler(file_handler)
+
     return __logger

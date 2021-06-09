@@ -19,6 +19,7 @@ import csv
 import openpyxl
 from pdfminer.high_level import extract_pages
 from pdfminer.layout import LTTextContainer
+import  json
 
 from Scripts.fastapp.common.consts import SAMPLE_FOLDER_PATH
 
@@ -305,7 +306,7 @@ class loadFileManager:
         
 
     def read_txt(self):
-        result:list=[]
+        result : list=[]
         with open(self.path, 'r', encoding='UTF8') as f:
             data = f.read()
             result.append({"page":0, "td": data })
@@ -313,6 +314,17 @@ class loadFileManager:
     
     def read_html(self):
         pass
+
+    def read_json(self):
+        """ json parser
+        """
+        result : list=[]
+        with open(self.path, 'r') as json_file:
+            json_data = json.load(json_file) # type: dict
+            # type(json.dumps(json_data)) # type: str
+            result.append({"page":0,  "td": json_data})
+        
+        return result
 
     read_function = {
         'pdf': read_pdf,
@@ -322,9 +334,10 @@ class loadFileManager:
         'csv': read_csv,
         'xlsx': read_xlsx,
         'txt': read_txt,
-        'html': read_html
+        'html': read_html,
+        'json': read_json,
     }
 
 # a = loadFileManager(SAMPLE_FOLDER_PATH + 'docx_sample4.docx')
-# a = loadFileManager(SAMPLE_FOLDER_PATH + 'pptx_sample2.pptx')
-# print(a.data)
+a = loadFileManager(SAMPLE_FOLDER_PATH + 'json_sample.json')
+print(a.data)

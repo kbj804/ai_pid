@@ -51,6 +51,7 @@ async def connect_xedm_session(request: Request):
     """
     request.state.inspect = frame()
     res = connect_session()
+    logger.info(res)
     if not res:
         raise ex.XedmLoadFailEx()
 
