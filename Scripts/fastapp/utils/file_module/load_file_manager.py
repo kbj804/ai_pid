@@ -4,6 +4,7 @@ pip install 'olefile'  or '-U olefile'
 pip install python-pptx
 pip install python-docx
 pip install openpyxl
+pip install xmltodict
 '''
 import os
 # from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
@@ -50,7 +51,7 @@ class loadFileManager:
             self.data = self.read_file()
 
         else:
-            print("여기론 안와")
+            print("### load_file_manager 에서 지원하지 않는 확장자 입니다. ###")
             pass
             
     # 확장자에 맞는 read 함수로 매핑
@@ -325,6 +326,29 @@ class loadFileManager:
             result.append({"page":0,  "td": json_data})
         
         return result
+    
+    def read_xml(self):
+        """ xml parser
+        : return dict
+        """
+        from xml.etree.ElementTree import parse, fromstring
+        import xmltodict
+        result : list = []
+
+        with open(self.path) as fd:
+            doc = xmltodict.parse(fd.read(), process_namespaces=True)
+        
+        data = json.dumps(doc)
+        # tree = parse(self.path)
+        # root = tree.getroot()
+        # print(tree)
+        # for child in root.iter():
+        #     print(child.tag, child.attrib)
+
+        result.append({"page":0,  "td": data})
+
+        return result
+
 
     read_function = {
         'pdf': read_pdf,
@@ -336,8 +360,11 @@ class loadFileManager:
         'txt': read_txt,
         'html': read_html,
         'json': read_json,
+        'xml': read_xml
     }
 
 # a = loadFileManager(SAMPLE_FOLDER_PATH + 'docx_sample4.docx')
+# a = loadFileManager(SAMPLE_FOLDER_PATH + 'xml_sample.xml')
 a = loadFileManager(SAMPLE_FOLDER_PATH + 'json_sample.json')
+
 print(a.data)
