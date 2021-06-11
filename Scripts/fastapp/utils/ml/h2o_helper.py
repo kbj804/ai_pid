@@ -6,7 +6,7 @@ pip install future
 pip install -f http://h2o-release.s3.amazonaws.com/h2o/latest_stable_Py.html h2o
 
 '''
-#%%
+
 import h2o
 from h2o.automl import H2OAutoML
 from h2o.h2o import load_model
@@ -14,20 +14,28 @@ from Scripts.fastapp.common.consts import H2O_MODEL_PATH
 import pandas as pd
 
 class H2oClass:
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, '_instance'):
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+
     def __init__(self):
-        super().__init__()
+        # super().__init__()
         # Start H2O Server
-        h2o.init()
-        self.train=[]
-        self.test=[]
-        
-        self.x = None
-        self.y = None
+        cls = type(self)
+        if not hasattr(cls, "_init"):
+            h2o.init()
+            self.train=[]
+            self.test=[]
+            
+            self.x = None
+            self.y = None
 
-        self.model = None
-        self.preds = None
+            self.model = None
+            self.preds = None
 
-        self.md_path = None
+            self.md_path = None
 
     def load_csv_to_hf(self, path):
         df = pd.read_csv(path, sep=',')

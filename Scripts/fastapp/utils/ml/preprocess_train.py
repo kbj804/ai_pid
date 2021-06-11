@@ -6,7 +6,7 @@ from Scripts.fastapp.database.schema import Train, Files
 
 ## 임시
 from Scripts.fastapp.common.consts import H2O_MODEL_PATH
-from Scripts.fastapp.utils.ml.h2o_helper import H2oClass
+# from Scripts.fastapp.utils.ml.h2o_helper import H2oClass
 from ast import literal_eval
 
 import requests
@@ -45,23 +45,23 @@ def preprocess(results:list):
 
 def train_save_model(train_data: list):
     df = preprocess(train_data)
-    hhh = H2oClass()
-    hf = hhh.df_to_hf(df)
-    hhh.split_data(hf)
-    ml = hhh.train_model()
-    hhh.save_md(ml)
+    # hhh = H2oClass()
+    # hf = hhh.df_to_hf(df)
+    # hhh.split_data(hf)
+    # ml = hhh.train_model()
+    # hhh.save_md(ml)
 
-def load_ml_model(model_path):
-    h = H2oClass()
-    model_ = h.load_md(model_path)
+# def load_ml_model(model_path):
+#     h = H2oClass()
+#     model_ = h.load_md(model_path)
 
-    return model_
+#     return model_
 
-def predict_pid(data, model):
-    df = preprocess(data)
-    h = H2oClass()
-    d = h.df_to_hf(df)
-    p = model.predict(d)
+# def predict_pid(data, model):
+#     df = preprocess(data)
+#     h = H2oClass()
+#     d = h.df_to_hf(df)
+#     p = model.predict(d)
 
 
 def xedm_post(data, sid):

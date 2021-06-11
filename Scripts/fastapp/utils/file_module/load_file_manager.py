@@ -365,6 +365,6 @@ class loadFileManager:
 
 # a = loadFileManager(SAMPLE_FOLDER_PATH + 'docx_sample4.docx')
 # a = loadFileManager(SAMPLE_FOLDER_PATH + 'xml_sample.xml')
-a = loadFileManager(SAMPLE_FOLDER_PATH + 'json_sample.json')
+# a = loadFileManager(SAMPLE_FOLDER_PATH + 'json_sample.json')
 
-print(a.data)
+# print(a.data)
