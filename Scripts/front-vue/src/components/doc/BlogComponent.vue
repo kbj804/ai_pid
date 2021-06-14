@@ -67,7 +67,7 @@
         restaurants: [
           {name: "sample", amount:0}
         ],
-        rstrChips:['배꼽집', '대문집', '진주집', '중국집', '쌀국수', '고등어', '분식', '순대국'],
+        rstrChips:['배꼽집', '대문집', '진주집', '중국집', '쌀국수', '고등어', '분식', '순대국', '오돈'],
         winner: null,
         lastTimeoutID: null,
       }

@@ -3,6 +3,7 @@ from Scripts.fastapp.database.schema import Train, Files
 # from Scripts.fastapp.database.conn import db
 # from sqlalchemy.orm import Session
 # from fastapi import  Depends
+from Scripts.fastapp.common.consts import XEDM_URL
 
 ## 임시
 from Scripts.fastapp.common.consts import H2O_MODEL_PATH
@@ -67,7 +68,7 @@ def train_save_model(train_data: list):
 def xedm_post(data, sid):
     print("####### PUSH PUSH POST ######")
     # url = f"http://183.111.96.15:7086/xedrm/json/updateDocEx?sid={sid}"
-    url = f"http://192.168.21.29:9080/xedrm/json/updateDocEx?sid={sid}"
+    url = f"http://{XEDM_URL}/xedrm/json/updateDocEx?sid={sid}"
     jsondata = json.dumps(data, indent=4)
     headers = {'Content-Type': 'application/json;'}
     res = requests.post(url, headers= headers,data = jsondata)
@@ -78,7 +79,7 @@ def xedm_post(data, sid):
 
 def connect_session():
     print("####### Connection Xedm Session ######")
-    url = 'http://183.111.96.15:7086/xedrm/json/login?isAgent=True&lang=ko&userId=Qmhp/4rwH78=&mode=jwt'
+    url = 'http://{XEDM_URL}/xedrm/json/login?isAgent=True&lang=ko&userId=Qmhp/4rwH78=&mode=jwt'
 
     res = requests.get(url)
     res = json.loads(res.text)

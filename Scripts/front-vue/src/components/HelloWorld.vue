@@ -38,6 +38,25 @@
       </md-card-media-cover>
 </md-card>
 
+  <md-card class="md-accent" md-with-hover>
+      <md-ripple>
+        <md-card-header>
+          <div class="md-title">Lunch</div>
+          <div class="md-subhead">Lunch Selector</div>
+        </md-card-header>
+
+        <md-card-content>
+          점심 선택 장애
+        </md-card-content>
+
+        <md-card-actions>
+          <md-button @click="goto('/doc/blog')">Try</md-button>
+        </md-card-actions>
+
+      </md-ripple>
+    </md-card>
+
+
 </div>
 </template>
 
