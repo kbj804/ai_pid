@@ -80,6 +80,7 @@ export default {
           },
           { name: 'Beta Model', url: '/betamodel', icon: 'icon-alarm text-dark'},
           { name: 'Visualization', url: '/visual', icon: 'icon-graph text-dark'},
+          { name: 'ToyProject', url: '/toy', icon: 'text-dark'},
           { name: 'Profile', url: '/profile', icon: 'icon-user text-dark'},
         ]
     }

@@ -59,6 +59,11 @@ const routes = [
     name: 'mldetect',
     component: () => import(/* webpackChunkName: "mldetect" */ '../views/PersonalInfo/mlDetectView.vue')
   },
+  {
+    path: '/toy',
+    name: 'ToyProject',
+    component: () => import(/* webpackChunkName: "mldetect" */ '../views/toyProject/staffView.vue')
+  },
   // {
   //   path: '/profile',
   //   name: 'profile',
