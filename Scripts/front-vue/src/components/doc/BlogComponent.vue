@@ -119,22 +119,24 @@
             let winnerIndex = arr.indexOf(Math.max(...arr));
 
             const timeoutId = setTimeout(obj => {
-              console.log(timeoutId)
-              if(this.stopflag) {
-                  console.log(1)
-                  this.restaurants[obj.num - 1].amount = 0;
-                  // this.stopflag = false;
-                  clearTimeout(timeoutId);
-                  return;
-              }
-              if(!(100 >= this.restaurants[obj.num - 1].amount)) {
+              // console.log(timeoutId)
+              // if(this.stopflag) {
+              //     console.log(1)
+              //     this.restaurants[obj.num - 1].amount = 0;
+              //     // this.stopflag = false;
+              //     clearTimeout(timeoutId);
+              //     return;
+              // }
+              if(!(100 > this.restaurants[obj.num - 1].amount)) {
+                console.log(1)
                 this.flag = true;
-                //clearTimeout(timeoutId);
-                //return;
+                clearTimeout(timeoutId);
+                return;
               }
               ++this.restaurants[obj.num - 1].amount;
+              console.log(this.restaurants[obj.num - 1].amount)
               this.winner = this.restaurants[obj.winnerIndex].name
-            }, idx++ * 100, {num, winnerIndex})
+            }, idx++ * 10, {num, winnerIndex})
         }
         
       },

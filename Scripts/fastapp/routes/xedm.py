@@ -26,7 +26,7 @@ import os
 router = APIRouter(prefix='/xedm')
 logger = get_logger()
 
-hoo = H2oClass()
+# hoo = H2oClass()
 
 @router.get('/loadml')
 async def load_ml_for_xedm(request: Request):
