@@ -46,7 +46,7 @@
         </md-card-header>
 
         <md-card-content>
-          점심 선택 장애
+          점심 선택 Error
         </md-card-content>
 
         <md-card-actions>
@@ -55,6 +55,30 @@
 
       </md-ripple>
     </md-card>
+
+  <md-card>
+      <md-card-media-cover md-text-scrim>
+        <md-card-media md-ratio="16:9">
+          <img src="@/assets/img/inzent_ai.png" alt="Skyscraper">
+        </md-card-media>
+
+        <md-card-area>
+          <md-card-header>
+            <span class="md-title" style="color: black;">Inzent NB Leader Board</span>
+            <span class="md-subhead" style="color: black;">Inzent 신입사원 교육</span>
+          </md-card-header>
+
+          <md-card-content>
+            Competition
+          </md-card-content>
+
+          <md-card-actions>
+            <md-button>Show</md-button>
+            <md-button @click="goto('/toy')">Try</md-button>
+          </md-card-actions>
+        </md-card-area>
+      </md-card-media-cover>
+</md-card>
 
 
 </div>
