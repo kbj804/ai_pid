@@ -1,6 +1,7 @@
 from sqlalchemy import (
     Column,
     Integer,
+    Float,
     String,
     DateTime,
     func,
@@ -229,3 +230,8 @@ class TextData(Base, BaseMixin):
     file_id = Column(Integer, ForeignKey("files.id"), nullable = False)
     page = Column(Integer, nullable = False)
     text_data = Column(String, nullable=True)
+
+class LeaderBoard(Base, BaseMixin):
+    __tablename__ = "leaderboard"
+    team_name = Column(String, nullable = True)
+    score = Column(Float, nullable = False)

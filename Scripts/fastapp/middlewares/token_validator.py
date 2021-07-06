@@ -126,6 +126,9 @@ async def access_control(request: Request, call_next):
 
             elif url.startswith("/api/xedm"):
                 print("########## /api/xedm start ############")
+            
+            elif url.startswith("/api/toy"):
+                print("########## /api/toy start ############")
                 
             else:
                 if "authorization" in headers.keys():

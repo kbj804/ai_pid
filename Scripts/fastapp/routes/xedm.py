@@ -12,7 +12,6 @@ from Scripts.fastapp import models as m
 from Scripts.fastapp.errors import exceptions as ex
 from inspect import currentframe as frame
 
-from Scripts.fastapp.utils.ml.h2o_helper import H2oClass
 from Scripts.fastapp.utils.ml.preprocess_train import preprocess, xedm_post, connect_session
 
 from Scripts.fastapp.common.config import get_logger
